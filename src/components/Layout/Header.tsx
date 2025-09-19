@@ -35,12 +35,19 @@ export const Header: React.FC<HeaderProps> = ({ title, onToggleSidebar, isSideba
   const connectWallet = async () => {
     setConnecting(true);
     try {
-      const info = await ethereumService.connectWallet();
-      setWalletInfo(info);
-      toast.success('Wallet connected successfully!', {
-        icon: '🔗',
-        duration: 3000,
-      });
+      const initialized = await ethereumService.initialize();
+      if (initialized) {
+        const info = await ethereumService.connectWallet();
+        setWalletInfo(info);
+        toast.success('Wallet connected successfully!', {
+          icon: '🔗',
+          duration: 3000,
+        });
+      } else {
+        toast.error('Please install MetaMask to connect your wallet', {
+          duration: 4000,
+        });
+      }
     } catch (error: any) {
       console.error('Failed to connect wallet:', error);
       toast.error(error.message || 'Failed to connect wallet');

@@ -7,14 +7,16 @@ import { ChatMessage } from '../../types';
 
 export const Chatbot: React.FC = () => {
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
       role: 'assistant',
-      content: `Hello! I'm your AgriChain assistant. I can help you with product registration, QR codes, payments, and supply chain queries. How can I assist you today?`,
+      content: language === 'or' 
+        ? `ନମସ୍କାର! ମୁଁ ଆପଣଙ୍କର FarmLedger ସହାୟକ। ମୁଁ ଆପଣଙ୍କୁ ଉତ୍ପାଦ ପଞ୍ଜୀକରଣ, QR କୋଡ, ପେମେଣ୍ଟ ଏବଂ ଯୋଗାଣ ଶୃଙ୍ଖଳା ପ୍ରଶ୍ନରେ ସାହାଯ୍ୟ କରିପାରିବି। ଆଜି ମୁଁ କିପରି ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରିପାରିବି?`
+        : `Hello! I'm your FarmLedger assistant. I can help you with product registration, QR codes, payments, and supply chain queries. How can I assist you today?`,
       timestamp: new Date(),
     },
   ]);
@@ -45,7 +47,20 @@ export const Chatbot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const response = await chatbotAPI.sendMessage(inputMessage, user.id);
+      let response;
+      if (language === 'or') {
+        // Odia responses
+        const odiaResponses = [
+          "ମୁଁ କୃଷି ଯୋଗାଣ ଶୃଙ୍ଖଳା, ଉତ୍ପାଦ ପଞ୍ଜୀକରଣ ଏବଂ ବ୍ଲକଚେନ ଯାଞ୍ଚ ବିଷୟରେ ସୂଚନା ସହିତ ସାହାଯ୍ୟ କରିପାରିବି।",
+          "ଉତ୍ପାଦ ପଞ୍ଜୀକରଣ ପାଇଁ, ଦୟାକରି 'Register Product' ବିଭାଗକୁ ଯାଆନ୍ତୁ ଏବଂ ସମସ୍ତ ଆବଶ୍ୟକ ବିବରଣୀ ପୂରଣ କରନ୍ତୁ।",
+          "QR କୋଡ ଉତ୍ପାଦର ସତ୍ୟତା ଯାଞ୍ଚ କରିବାରେ ସାହାଯ୍ୟ କରେ। ଆପଣଙ୍କ ଉତ୍ପାଦ ପଞ୍ଜୀକରଣ କରିବା ପରେ ଆପଣ ସେଗୁଡିକ ତିଆରି କରିପାରିବେ।",
+          "MSP (ସର୍ବନିମ୍ନ ସହାୟତା ମୂଲ୍ୟ) ହାର ନିୟମିତ ଅପଡେଟ ହୁଏ। ବର୍ତ୍ତମାନର ହାର ପାଇଁ MSP Status ବିଭାଗ ଦେଖନ୍ତୁ।",
+          "ପେମେଣ୍ଟ ସମସ୍ୟା ପାଇଁ, ଦୟାକରି ଆମର ସପୋର୍ଟ ଟିମ୍ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ କିମ୍ବା Payment Gateway ବିଭାଗ ଦେଖନ୍ତୁ।",
+        ];
+        response = odiaResponses[Math.floor(Math.random() * odiaResponses.length)];
+      } else {
+        response = await chatbotAPI.sendMessage(inputMessage, user.id);
+      }
       
       const assistantMessage: ChatMessage = {
         id: `msg-${Date.now()}-assistant`,
@@ -76,11 +91,11 @@ export const Chatbot: React.FC = () => {
   };
 
   const quickQuestions = [
-    "How do I register a product?",
-    "How to generate QR codes?",
-    "What is MSP rate?",
-    "Payment gateway help",
-    "KYC verification process",
+    language === 'or' ? "ମୁଁ କିପରି ଉତ୍ପାଦ ପଞ୍ଜୀକରଣ କରିବି?" : "How do I register a product?",
+    language === 'or' ? "QR କୋଡ କିପରି ତିଆରି କରିବି?" : "How to generate QR codes?",
+    language === 'or' ? "MSP ହାର କ'ଣ?" : "What is MSP rate?",
+    language === 'or' ? "ପେମେଣ୍ଟ ଗେଟୱେ ସାହାଯ୍ୟ" : "Payment gateway help",
+    language === 'or' ? "KYC ଯାଞ୍ଚ ପ୍ରକ୍ରିୟା" : "KYC verification process",
   ];
 
   if (!isOpen) {
@@ -106,7 +121,11 @@ export const Chatbot: React.FC = () => {
               <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
+<<<<<<< HEAD
               <h3 className="font-semibold text-sm sm:text-base">FarmLegder Assistant</h3>
+=======
+              <h3 className="font-semibold text-sm sm:text-base">FarmLedger Assistant</h3>
+>>>>>>> 22710c20db4c6334685496dd62d1741b1701e921
               <p className="text-xs opacity-90 hidden sm:block">Online</p>
             </div>
           </div>

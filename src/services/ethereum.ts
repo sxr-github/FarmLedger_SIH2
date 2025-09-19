@@ -23,7 +23,7 @@ const CONTRACT_ABI = [
 ];
 
 // Sepolia testnet contract address (deploy using Remix IDE)
-const CONTRACT_ADDRESS = "0x742d35Cc6634C0532925a3b8D0C9C0C0C0C0C0C0"; // Replace with actual deployed address
+const CONTRACT_ADDRESS = "0x742d35Cc6634C0532925a3b8D0C9C0C0C0C0C0C0";
 
 export interface EthereumTransaction {
   hash: string;
@@ -58,7 +58,8 @@ class EthereumService {
       const ethereumProvider = await detectEthereumProvider();
       
       if (!ethereumProvider) {
-        throw new Error('MetaMask not detected. Please install MetaMask.');
+        console.warn('MetaMask not detected. Please install MetaMask.');
+        return false;
       }
 
       this.provider = new ethers.BrowserProvider(window.ethereum);
@@ -66,13 +67,18 @@ class EthereumService {
       // Check if we're on Sepolia testnet
       const network = await this.provider.getNetwork();
       if (network.chainId !== 11155111n) { // Sepolia chain ID
-        await this.switchToSepolia();
+        try {
+          await this.switchToSepolia();
+        } catch (error) {
+          console.warn('Failed to switch to Sepolia network:', error);
+          return false;
+        }
       }
 
       return true;
     } catch (error) {
       console.error('Failed to initialize Ethereum service:', error);
-      throw error;
+      return false;
     }
   }
 

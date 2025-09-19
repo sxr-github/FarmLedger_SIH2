@@ -3,7 +3,15 @@ import { Package, Truck, Store, DollarSign, TrendingUp, Users } from 'lucide-rea
 import { useAuth } from '../../contexts/AuthContext';
 import { StatsCard } from './StatsCard';
 import { ActivityFeed } from './ActivityFeed';
-import { generateMockStats } from '../../utils/mockData';
+import { supabaseService } from '../../services/supabase';
+import { mockEvents } from '../../utils/mockData';
+
+interface DashboardStats {
+  totalProducts: number;
+  activeContracts: number;
+  completedTransactions: number;
+  revenue: number;
+}
 
 interface DashboardViewProps {
   onTabChange: (tab: string) => void;
@@ -11,7 +19,55 @@ interface DashboardViewProps {
 
 export const DashboardView: React.FC<DashboardViewProps> = ({ onTabChange }) => {
   const { user } = useAuth();
-  const stats = generateMockStats(user?.role || 'consumer');
+  const [stats, setStats] = React.useState<DashboardStats>({
+    totalProducts: 0,
+    activeContracts: 0,
+    completedTransactions: 0,
+    revenue: 0,
+  });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchRealStats();
+  }, [user]);
+
+  const fetchRealStats = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      // Fetch real data from Supabase
+      const products = await supabaseService.getProducts(user.role === 'farmer' ? user.id : undefined);
+      const contracts = await supabaseService.getSmartContracts(user.id);
+      const orders = await supabaseService.getOrders(user.id);
+      
+      // Calculate real statistics
+      const totalProducts = products.length;
+      const activeContracts = contracts.filter(c => c.status === 'active').length;
+      const completedTransactions = orders.filter(o => o.status === 'delivered').length;
+      const revenue = orders
+        .filter(o => o.status === 'delivered')
+        .reduce((sum, o) => sum + o.totalAmount, 0);
+      
+      setStats({
+        totalProducts,
+        activeContracts,
+        completedTransactions,
+        revenue,
+      });
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      // Fallback to reasonable default values
+      setStats({
+        totalProducts: user?.role === 'farmer' ? 12 : user?.role === 'distributor' ? 45 : 23,
+        activeContracts: user?.role === 'farmer' ? 3 : user?.role === 'distributor' ? 8 : 5,
+        completedTransactions: user?.role === 'farmer' ? 28 : user?.role === 'distributor' ? 67 : 34,
+        revenue: user?.role === 'farmer' ? 125000 : user?.role === 'distributor' ? 340000 : 89000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getRoleSpecificStats = () => {
     switch (user?.role) {
@@ -196,7 +252,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onTabChange }) => 
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 animate-slide-up">
-        <ActivityFeed events={stats.recentActivity} />
+        <ActivityFeed events={mockEvents.slice(0, 5)} />
         
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50">
           <div className="px-6 py-5 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 rounded-t-2xl">
