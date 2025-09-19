@@ -76,7 +76,7 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({ productId }) => {
       printWindow.document.write(`
         <html>
           <head>
-            <title>AgriChain QR Code - ${selectedProduct?.name}</title>
+            <title>FarmLegder QR Code - ${selectedProduct?.name}</title>
             <style>
               body { 
                 font-family: Arial, sans-serif; 
@@ -135,7 +135,7 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({ productId }) => {
     
     const selectedProduct = mockProducts.find(p => p.id === selectedProductId);
     const shareData = {
-      title: `AgriChain - ${selectedProduct?.name}`,
+      title: `FarmLegder - ${selectedProduct?.name}`,
       text: `Verify this agricultural product: ${selectedProduct?.name} (Batch: ${selectedProduct?.batchId})`,
       url: `${window.location.origin}/verify/${selectedProductId}`,
     };

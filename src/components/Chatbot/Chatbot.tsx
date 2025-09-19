@@ -106,7 +106,7 @@ export const Chatbot: React.FC = () => {
               <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm sm:text-base">AgriChain Assistant</h3>
+              <h3 className="font-semibold text-sm sm:text-base">FarmLegder Assistant</h3>
               <p className="text-xs opacity-90 hidden sm:block">Online</p>
             </div>
           </div>

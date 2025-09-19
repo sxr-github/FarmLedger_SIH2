@@ -2,9 +2,9 @@
 pragma solidity ^0.8.19;
 
 /**
- * @title AgriChain Smart Contract
+ * @title FarmLegder Smart Contract
  * @dev Manages agricultural supply chain with escrow functionality
- * @author AgriChain Team
+ * @author FarmLegder Team
  */
 contract AgriChainContract {
     // Events

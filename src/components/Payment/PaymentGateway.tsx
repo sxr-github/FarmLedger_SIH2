@@ -113,8 +113,7 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
         <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-          <DollarSign className="w-5 h-5 mr-2 text-blue-600" />
-          {t('payment_gateway')}
+          {t('Bill Details')}
         </h3>
       </div>
 
@@ -189,7 +188,6 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
             </>
           ) : (
             <>
-              <DollarSign className="w-5 h-5 mr-2" />
               Pay ₹{(amount + Math.round(amount * 0.02)).toLocaleString()}
             </>
           )}

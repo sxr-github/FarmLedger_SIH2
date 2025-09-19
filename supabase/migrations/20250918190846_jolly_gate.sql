@@ -1,5 +1,5 @@
 /*
-  # AgriChain Database Schema
+  # FarmLegder Database Schema
 
   1. New Tables
     - `users` - User profiles and authentication
