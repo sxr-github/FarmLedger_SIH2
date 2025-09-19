@@ -210,6 +210,13 @@ const AppContent: React.FC = () => {
         );
       
       case 'active-transactions':
+        return (
+          <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">Active Transactions</h1>
+            <TransactionRegistry />
+          </div>
+        );
+      
       case 'user-management':
       case 'validators':
       case 'analytics':
