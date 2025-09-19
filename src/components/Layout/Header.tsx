@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ title, onToggleSidebar, isSideba
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                  AgriChain
+                  FARMLEDGER
                 </h1>
               </div>
             </div>

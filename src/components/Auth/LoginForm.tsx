@@ -32,6 +32,7 @@ export const LoginForm: React.FC = () => {
               <Leaf className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">AgriChain</h1>
+            <h1 className="text-2xl font-bold text-gray-900">FARMLEDGER</h1>
             <p className="text-gray-600 mt-2">Blockchain Agricultural Supply Chain</p>
           </div>
 

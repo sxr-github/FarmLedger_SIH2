@@ -139,7 +139,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange, isOpen
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                AgriChain
+                FARMLEDGER
               </h1>
               <p className="text-xs text-gray-500 -mt-1">Blockchain Agriculture</p>
             </div>
