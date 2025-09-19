@@ -189,7 +189,6 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
             </>
           ) : (
             <>
-              <DollarSign className="w-5 h-5 mr-2" />
               Pay ₹{(amount + Math.round(amount * 0.02)).toLocaleString()}
             </>
           )}

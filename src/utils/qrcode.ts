@@ -1,14 +1,15 @@
 import QRCode from 'qrcode';
 import { QRCodePayload } from '../types';
+import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = 'agricchain-secret-key-2024'; // In production, use environment variable
+const SECRET_KEY = 'farmledger-secret-key-2024'; // In production, use environment variable
 
 export const generateQRCodePayload = (productId: string): QRCodePayload => {
   const timestamp = Date.now();
   const message = `${productId}:${timestamp}`;
   
-  // In production, use proper HMAC-SHA256 or JWT signing
-  const signature = btoa(message + SECRET_KEY).replace(/[^a-zA-Z0-9]/g, '');
+  // Use proper HMAC-SHA256 signing
+  const signature = CryptoJS.HmacSHA256(message, SECRET_KEY).toString();
   
   return {
     productId,
@@ -20,7 +21,7 @@ export const generateQRCodePayload = (productId: string): QRCodePayload => {
 export const validateQRCodePayload = (payload: QRCodePayload): boolean => {
   const { productId, timestamp, signature } = payload;
   const message = `${productId}:${timestamp}`;
-  const expectedSignature = btoa(message + SECRET_KEY).replace(/[^a-zA-Z0-9]/g, '');
+  const expectedSignature = CryptoJS.HmacSHA256(message, SECRET_KEY).toString();
   
   // Check signature validity
   if (signature !== expectedSignature) {
